@@ -1,0 +1,32 @@
+PROYEK KLINIK SEHAT - HAK AKSES (Laravel 13)
+
+A. PASANG KE PROYEK YANG SUDAH ADA (C:\laragon\www\dokter-medis-laravel)
+   1. Salin isi folder ini ke root proyek, pilih Replace kalau ditanya.
+   2. Hapus file kosong database/migrations/create_dokter_php
+   3. Jangan timpa bootstrap/app.php (alias 'role' -> EnsureUserHasRole sudah benar).
+   4. Pastikan .env: DB_CONNECTION=mysql, DB_DATABASE=klinik_rawat_jalan
+      (buat database-nya dulu di phpMyAdmin/HeidiSQL, MySQL Laragon harus menyala)
+   5. Terminal VS Code (Ctrl+C dulu kalau server masih jalan):
+        php artisan migrate:fresh --seed
+        php artisan serve
+   6. Buka http://127.0.0.1:8000/login
+
+B. AKUN CONTOH (password: password)
+   admin@klinik.test -> boleh lihat, tambah, edit, hapus
+   user@klinik.test  -> hanya lihat
+
+C. ISI PAKET
+   migrations : users (bersih), poli, dokter, tambah kolom role
+   models     : User (+isAdmin), Poli, Dokter
+   controller : AuthController, DokterController
+   request    : DokterRequest
+   seeder     : DatabaseSeeder, DokterSeeder (6 dokter contoh)
+   views      : auth/login, layouts/app, dokter/{index,create,edit,form}
+   routes     : web.php (login, logout, akses per role)
+   public     : css/style.css
+
+D. KALAU MAU MULAI DARI PROYEK LARAVEL BARU
+   composer create-project laravel/laravel dokter-medis-laravel
+   lalu lakukan langkah A (kecuali langkah 2 dan 3). Tambahkan sendiri di
+   bootstrap/app.php:  $middleware->alias(['role' => \App\Http\Middleware\EnsureUserHasRole::class]);
+   dan salin app/Http/Middleware/EnsureUserHasRole.php dari repo GitHub-mu.
